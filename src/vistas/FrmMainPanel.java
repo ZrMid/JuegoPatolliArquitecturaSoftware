@@ -1,6 +1,10 @@
 package vistas;
 
+import conexiones.Cliente;
 import conexiones.Server;
+import datosPartida.ConfiguracionPartida;
+import datosPartida.Ficha;
+import datosPartida.Jugador;
 import java.beans.PropertyVetoException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -8,48 +12,114 @@ import javax.swing.JOptionPane;
 
 public class FrmMainPanel extends javax.swing.JFrame {
 
-    FrmMenu objMenu;
-    FrmCrearPartida objCrearPartida;
+    InternalFrmMenu objMenu;
+    InternalFrmCrearPartida objCrearPartida;
+    InternalFrmTablero objTablero;
+    InternalFrmUnirsePartida objUnirsePartida;
+
+    Server objServer;
+    Cliente objCliente;
+    ConfiguracionPartida objConfPartida;
+    Jugador objJugador;
+    Ficha[] objFichas;
 
     public FrmMainPanel() {
         initComponents();
         this.setTitle("Patolli");
         this.setLocationRelativeTo(null);
-        agregarFrmMenu();
+        agregarInternalFrmMenu();
     }
 
-    public void agregarFrmMenu() {
+    public void agregarInternalFrmMenu() {
         try {
-            objMenu = new FrmMenu(this);
+            objMenu = new InternalFrmMenu(this);
             objMenu.setMaximum(true);
             objMenu.setVisible(true);
+            jdesk.removeAll();
             jdesk.add(objMenu);
         } catch (PropertyVetoException ex) {
             Logger.getLogger(FrmMainPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void agregarFrmCrearPartida() {
+    public void agregarInternalFrmCrearPartida() {
         try {
-            objCrearPartida = new FrmCrearPartida(this);
+            objCrearPartida = new InternalFrmCrearPartida(this);
             objCrearPartida.setMaximum(true);
             objCrearPartida.setVisible(true);
+            jdesk.removeAll();
             jdesk.add(objCrearPartida);
         } catch (PropertyVetoException ex) {
             Logger.getLogger(FrmMainPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void crearServer() {
-        Server objServer = new Server(12345);
+    public void agregarInternalFrmUnirsePartida(String rango) {
+        try {
+            objUnirsePartida = new InternalFrmUnirsePartida(this, rango);
+            objUnirsePartida.setMaximum(true);
+            objUnirsePartida.setVisible(true);
+            jdesk.removeAll();
+            jdesk.add(objUnirsePartida);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(FrmMainPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void agregarInternalFrmTablero() {
+        try {
+            objTablero = new InternalFrmTablero(this);
+            objTablero.setMaximum(true);
+            objTablero.setVisible(true);
+            jdesk.removeAll();
+            jdesk.add(objTablero);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(FrmMainPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void crearConfiguracionPartida(int noJugadores, int noCasillasAspa, int noFichas, int noFrijoles) {
+        objConfPartida = new ConfiguracionPartida(noJugadores, noCasillasAspa, noFichas, noFrijoles);
+    }
+
+    public void crearServer(int puerto) {
+
+        String confPart = "" + objConfPartida.getNoJugadores() + "," + objConfPartida.getNoCasillasAspa() + "," + objConfPartida.getNoFichas() + "," + objConfPartida.getNoFrijoles();
+
+        objServer = new Server(puerto, confPart);
 
         if (objServer.isPortAvailable()) {
             Thread server = new Thread(objServer);
             server.start();
             //
-            this.dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Ya se encuentra una sala creada", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void crearFichas(int noFichas) {
+        objFichas = new Ficha[noFichas];
+        for (Ficha objFicha : objFichas) {
+            if (objFicha.getNoFicha() == null) {
+                System.out.println("null");
+            }
+        }
+    }
+
+    public void crearJugador(String rango, String nombre, String color) {
+        objJugador = new Jugador(rango, nombre, color);
+    }
+
+    public boolean ingresarServer(String ip) {
+        String paquete = objJugador.getRango() + "," + objJugador.getNombre() + "," + objJugador.getColor();
+        objCliente = new Cliente(paquete, ip, objTablero);
+
+        if (objCliente.puedeEstablecerConexion()) {
+            Thread cliente = new Thread(objCliente);
+            cliente.start();
+            return true;
+        } else {
+            return false;
         }
 
     }
@@ -68,13 +138,11 @@ public class FrmMainPanel extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(904, 600));
         setMinimumSize(new java.awt.Dimension(904, 600));
-        setPreferredSize(new java.awt.Dimension(904, 600));
         setResizable(false);
         setSize(new java.awt.Dimension(904, 600));
 
         jdesk.setMaximumSize(new java.awt.Dimension(904, 600));
         jdesk.setMinimumSize(new java.awt.Dimension(904, 600));
-        jdesk.setPreferredSize(new java.awt.Dimension(904, 600));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -127,6 +195,6 @@ public class FrmMainPanel extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JDesktopPane jdesk;
+    private javax.swing.JDesktopPane jdesk;
     // End of variables declaration//GEN-END:variables
 }

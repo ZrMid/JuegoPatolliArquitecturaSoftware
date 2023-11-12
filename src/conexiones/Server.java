@@ -13,30 +13,37 @@ public class Server implements Runnable {
 
     private static List<Socket> clientSockets = new ArrayList<>();
     private static List<String> clientUserInfo = new ArrayList<>();
-    
-    static int port; 
-    
-    public Server(int puerto){
+
+    static String[] configuracionPartida;
+    static int port;
+
+    static boolean esperando = true;
+
+    public Server(int puerto, String configuracionPartida) {
         this.port = puerto;
+        this.configuracionPartida = configuracionPartida.split(",");
     }
 
     @Override
     public void run() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("El servidor está escuchando en el puerto " + port);
-            
+
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Cliente conectado desde " + clientSocket.getInetAddress());
-                
+
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 String userInfo = in.readLine();
-                clientUserInfo.add(userInfo);
 
-                clientSockets.add(clientSocket);
-                
-                Thread clientHandler = new Thread(new ClientHandler(clientSocket, userInfo));
-                clientHandler.start();
+                if (userInfo != null) {
+                    clientUserInfo.add(userInfo);
+                    clientSockets.add(clientSocket);
+
+                    Thread clientHandler = new Thread(new ClientHandler(clientSocket, userInfo));
+                    clientHandler.start();
+                }
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -67,7 +74,7 @@ public class Server implements Runnable {
                     broadcastMessage(userInfo + ": " + message);
                 }
             } catch (IOException e) {
-                
+
             } finally {
                 clientSockets.remove(socket);
                 clientUserInfo.remove(userInfo);
@@ -88,7 +95,7 @@ public class Server implements Runnable {
             }
         }
     }
-    
+
     public static boolean isPortAvailable() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             return true;
