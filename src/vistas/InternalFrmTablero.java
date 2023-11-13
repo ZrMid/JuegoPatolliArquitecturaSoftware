@@ -1,15 +1,70 @@
-
 package vistas;
 
-public class InternalFrmTablero extends javax.swing.JInternalFrame {
-    
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+public class InternalFrmTablero extends javax.swing.JInternalFrame implements Runnable {
+
     FrmMainPanel objMainPanel;
+
+    String[] config;
+    List<String[]> jugadores = new ArrayList<>(); 
 
     public InternalFrmTablero(FrmMainPanel objMainPanel) {
         initComponents();
         ((javax.swing.plaf.basic.BasicInternalFrameUI) this.getUI()).setNorthPane(null);
 
         this.objMainPanel = objMainPanel;
+
+        txtArea.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                String[] datosPartida = txtArea.getText().split("\n");
+                String ultimalineaStr = datosPartida[datosPartida.length - 1];
+                String[] ultimalinea = ultimalineaStr.split(",");
+                if (ultimalinea[0].equals("CP")) {
+                    config = ultimalinea;
+                } else if (ultimalinea[0].equals("CJ")) {
+                    jugadores.add(ultimalinea);
+                    String nombre = ultimalinea[2];
+                    int turno = Integer.parseInt(ultimalinea[ultimalinea.length-1]);
+                    switch (turno) {
+                        case 1:
+                            lbl1.setText(nombre);
+                            break;
+                        case 2:
+                            lbl2.setText(nombre);
+                            break;
+                        case 3:
+                            lbl3.setText(nombre);
+                            break;
+                        case 4:
+                            lbl4.setText(nombre);
+                            break;
+                        default:
+                            System.out.println("DefaultSwitchTablero");
+                    }
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                // Método llamado cuando se elimina texto
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                // Este método se llama cuando se cambian atributos del documento (por ejemplo, estilos)
+            }
+        });
+    }
+
+    public void agregarJugadores() {
+        for (int i = 0; i < Integer.parseInt(config[0]); i++) {
+
+        }
     }
 
     /**
@@ -22,10 +77,10 @@ public class InternalFrmTablero extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        lbl1 = new javax.swing.JLabel();
+        lbl4 = new javax.swing.JLabel();
+        lbl2 = new javax.swing.JLabel();
+        lbl3 = new javax.swing.JLabel();
         jscroll = new javax.swing.JScrollPane();
         txtArea = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
@@ -37,29 +92,29 @@ public class InternalFrmTablero extends javax.swing.JInternalFrame {
 
         jPanel1.setLayout(null);
 
-        jLabel2.setFont(new java.awt.Font("Lucida Sans", 1, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Esperando Admin...");
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(30, 30, 250, 80);
+        lbl1.setFont(new java.awt.Font("Lucida Sans", 1, 24)); // NOI18N
+        lbl1.setForeground(new java.awt.Color(255, 255, 255));
+        lbl1.setText("Esperando Admin...");
+        jPanel1.add(lbl1);
+        lbl1.setBounds(30, 30, 250, 80);
 
-        jLabel3.setFont(new java.awt.Font("Lucida Sans", 1, 24)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Esperando Jugador...");
-        jPanel1.add(jLabel3);
-        jLabel3.setBounds(600, 400, 270, 70);
+        lbl4.setFont(new java.awt.Font("Lucida Sans", 1, 24)); // NOI18N
+        lbl4.setForeground(new java.awt.Color(255, 255, 255));
+        lbl4.setText("Esperando Jugador...");
+        jPanel1.add(lbl4);
+        lbl4.setBounds(600, 400, 270, 70);
 
-        jLabel4.setFont(new java.awt.Font("Lucida Sans", 1, 24)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Esperando Jugador...");
-        jPanel1.add(jLabel4);
-        jLabel4.setBounds(610, 30, 270, 70);
+        lbl2.setFont(new java.awt.Font("Lucida Sans", 1, 24)); // NOI18N
+        lbl2.setForeground(new java.awt.Color(255, 255, 255));
+        lbl2.setText("Esperando Jugador...");
+        jPanel1.add(lbl2);
+        lbl2.setBounds(610, 30, 270, 70);
 
-        jLabel5.setFont(new java.awt.Font("Lucida Sans", 1, 24)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Esperando Jugador...");
-        jPanel1.add(jLabel5);
-        jLabel5.setBounds(30, 400, 270, 70);
+        lbl3.setFont(new java.awt.Font("Lucida Sans", 1, 24)); // NOI18N
+        lbl3.setForeground(new java.awt.Color(255, 255, 255));
+        lbl3.setText("Esperando Jugador...");
+        jPanel1.add(lbl3);
+        lbl3.setBounds(30, 400, 270, 70);
 
         jscroll.setEnabled(false);
         jscroll.setMaximumSize(new java.awt.Dimension(64, 20));
@@ -93,12 +148,17 @@ public class InternalFrmTablero extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jscroll;
+    private javax.swing.JLabel lbl1;
+    private javax.swing.JLabel lbl2;
+    private javax.swing.JLabel lbl3;
+    private javax.swing.JLabel lbl4;
     public static javax.swing.JTextArea txtArea;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void run() {
+
+    }
 }

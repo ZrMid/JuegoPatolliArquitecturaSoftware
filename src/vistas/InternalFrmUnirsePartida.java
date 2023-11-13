@@ -53,6 +53,7 @@ public class InternalFrmUnirsePartida extends javax.swing.JInternalFrame {
         setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         setMaximumSize(new java.awt.Dimension(904, 600));
         setMinimumSize(new java.awt.Dimension(904, 600));
+        setPreferredSize(new java.awt.Dimension(904, 600));
 
         jPanelMain.setLayout(null);
 
@@ -154,6 +155,7 @@ public class InternalFrmUnirsePartida extends javax.swing.JInternalFrame {
         jLabel6.setBounds(500, 90, 87, 50);
 
         lblIp.setFont(new java.awt.Font("Lucida Sans", 1, 24)); // NOI18N
+        lblIp.setText("localhost");
         jPanelMain.add(lblIp);
         lblIp.setBounds(500, 140, 320, 50);
 
@@ -205,7 +207,7 @@ public class InternalFrmUnirsePartida extends javax.swing.JInternalFrame {
 
     private void panelBorder1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelBorder1MouseClicked
         if (!txtNombre.getText().isEmpty() && !color.isEmpty()) {
-            objMainPanel.crearJugador(rango, txtNombre.getText(), color);
+            objMainPanel.crearJugador(rango.toUpperCase(), txtNombre.getText().toUpperCase(), color.toUpperCase());
             if (lblIp.getText().isEmpty()) {
                 lblIp.setText("localhost");
             }

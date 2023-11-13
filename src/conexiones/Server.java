@@ -8,6 +8,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Server implements Runnable {
 
@@ -15,13 +17,17 @@ public class Server implements Runnable {
     private static List<String> clientUserInfo = new ArrayList<>();
 
     static String[] configuracionPartida;
+    static String configuracionPartidaStr;
     static int port;
 
-    static boolean esperando = true;
+    public int turno = 2;
+    public boolean esperandoJugadores = true;
+    public String totUserInfo = "";
 
     public Server(int puerto, String configuracionPartida) {
         this.port = puerto;
         this.configuracionPartida = configuracionPartida.split(",");
+        this.configuracionPartidaStr = configuracionPartida;
     }
 
     @Override
@@ -36,17 +42,45 @@ public class Server implements Runnable {
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 String userInfo = in.readLine();
 
-                if (userInfo != null) {
+                if (userInfo != null) {                    
+                    if (userInfo.split(",")[0].equals("ADMIN")) {
+                        userInfo += ",1";
+                    } else {
+                        userInfo += "," + turno;
+                        turno++;
+                    }
+                    
                     clientUserInfo.add(userInfo);
                     clientSockets.add(clientSocket);
 
                     Thread clientHandler = new Thread(new ClientHandler(clientSocket, userInfo));
                     clientHandler.start();
+
+                    if (esperandoJugadores && configuracionPartida[0].equals("" + clientUserInfo.size())) {
+                        Thread.sleep(5000);
+                        for (Socket clientSockets : clientSockets) {
+                            try {
+                                
+                                PrintWriter clientOut = new PrintWriter(clientSockets.getOutputStream(), true);
+                                clientOut.println("CP," + configuracionPartidaStr);
+                                
+                                for(int i = 0; i<clientUserInfo.size(); i++){
+                                    String jugador  = "CJ," + clientUserInfo.get(i);
+                                    clientOut.println(jugador);
+                                }
+                                esperandoJugadores = false;
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
                 }
 
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -60,7 +94,7 @@ public class Server implements Runnable {
         public ClientHandler(Socket socket, String userInfo) {
             this.socket = socket;
             this.userInfo = userInfo;
-            broadcastMessage(userInfo + " se ha unido.");
+
         }
 
         @Override
@@ -73,6 +107,16 @@ public class Server implements Runnable {
                 while ((message = in.readLine()) != null) {
                     broadcastMessage(userInfo + ": " + message);
                 }
+
+                if (clientUserInfo.size() >= Integer.parseInt(configuracionPartida[0])) {
+                    try {
+                        PrintWriter clientOut = new PrintWriter(socket.getOutputStream(), true);
+                        clientOut.println("SalaLlena");
+                    } catch (IOException ex) {
+                        Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
             } catch (IOException e) {
 
             } finally {

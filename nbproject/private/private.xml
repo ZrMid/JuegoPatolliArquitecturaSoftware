@@ -4,9 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/rasez/Documents/NetBeansProjects/Patolli/src/vistas/FrmMainPanel.java</file>
+            <file>file:/C:/Users/rasez/Documents/NetBeansProjects/Patolli/src/conexiones/Cliente.java</file>
             <file>file:/C:/Users/rasez/Documents/NetBeansProjects/Patolli/src/conexiones/Server.java</file>
+            <file>file:/C:/Users/rasez/Documents/NetBeansProjects/Patolli/src/vistas/InternalFrmTablero.java</file>
+            <file>file:/C:/Users/rasez/Documents/NetBeansProjects/Patolli/src/datosPartida/Jugador.java</file>
+            <file>file:/C:/Users/rasez/Documents/NetBeansProjects/Patolli/src/datosPartida/Ficha.java</file>
             <file>file:/C:/Users/rasez/Documents/NetBeansProjects/Patolli/src/vistas/InternalFrmUnirsePartida.java</file>
-            <file>file:/C:/Users/rasez/Documents/NetBeansProjects/Patolli/src/vistas/InternalFrmCrearPartida.java</file>
         </group>
     </open-files>
 </project-private>
