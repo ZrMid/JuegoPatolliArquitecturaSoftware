@@ -42,14 +42,14 @@ public class Server implements Runnable {
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 String userInfo = in.readLine();
 
-                if (userInfo != null) {                    
+                if (userInfo != null) {
                     if (userInfo.split(",")[0].equals("ADMIN")) {
                         userInfo += ",1";
                     } else {
                         userInfo += "," + turno;
                         turno++;
                     }
-                    
+
                     clientUserInfo.add(userInfo);
                     clientSockets.add(clientSocket);
 
@@ -60,12 +60,12 @@ public class Server implements Runnable {
                         Thread.sleep(5000);
                         for (Socket clientSockets : clientSockets) {
                             try {
-                                
+
                                 PrintWriter clientOut = new PrintWriter(clientSockets.getOutputStream(), true);
                                 clientOut.println("CP," + configuracionPartidaStr);
-                                
-                                for(int i = 0; i<clientUserInfo.size(); i++){
-                                    String jugador  = "CJ," + clientUserInfo.get(i);
+
+                                for (int i = 0; i < clientUserInfo.size(); i++) {
+                                    String jugador = "CJ," + clientUserInfo.get(i);
                                     clientOut.println(jugador);
                                 }
                                 esperandoJugadores = false;
@@ -103,22 +103,20 @@ public class Server implements Runnable {
                 out = new PrintWriter(socket.getOutputStream(), true);
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
+                if (clientUserInfo.size() > Integer.parseInt(configuracionPartida[0])) {
+                    Thread.sleep(5000);
+                    out.println("SALA-LLENA");
+                }
+
                 String message;
                 while ((message = in.readLine()) != null) {
                     broadcastMessage(userInfo + ": " + message);
                 }
 
-                if (clientUserInfo.size() >= Integer.parseInt(configuracionPartida[0])) {
-                    try {
-                        PrintWriter clientOut = new PrintWriter(socket.getOutputStream(), true);
-                        clientOut.println("SalaLlena");
-                    } catch (IOException ex) {
-                        Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-
             } catch (IOException e) {
 
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 clientSockets.remove(socket);
                 clientUserInfo.remove(userInfo);

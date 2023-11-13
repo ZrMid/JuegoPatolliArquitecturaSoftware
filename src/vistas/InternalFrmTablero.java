@@ -2,6 +2,7 @@ package vistas;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -46,6 +47,9 @@ public class InternalFrmTablero extends javax.swing.JInternalFrame implements Ru
                         default:
                             System.out.println("DefaultSwitchTablero");
                     }
+                }else if(ultimalineaStr.equals("SALA-LLENA")){
+                    JOptionPane.showMessageDialog(null, "La sala se encuentra llena");
+                    objMainPanel.agregarInternalFrmMenu();
                 }
             }
 
