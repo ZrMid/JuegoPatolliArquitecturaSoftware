@@ -100,7 +100,7 @@ public class InternalFrmCrearPartida extends javax.swing.JInternalFrame {
         lblNoJugadores.setFont(new java.awt.Font("Lucida Sans", 1, 24)); // NOI18N
         lblNoJugadores.setForeground(new java.awt.Color(255, 255, 255));
         lblNoJugadores.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblNoJugadores.setText("2");
+        lblNoJugadores.setText("1");
         jPanel1.add(lblNoJugadores);
         lblNoJugadores.setBounds(190, 200, 80, 40);
 

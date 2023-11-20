@@ -31,51 +31,32 @@ public class FrmMainPanel extends javax.swing.JFrame {
     }
 
     public void agregarInternalFrmMenu() {
-        try {
-            objMenu = new InternalFrmMenu(this);
-            objMenu.setMaximum(true);
-            objMenu.setVisible(true);
-            jdesk.removeAll();
-            jdesk.add(objMenu);
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(FrmMainPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        objMenu = new InternalFrmMenu(this);
+        objMenu.setVisible(true);
+        jdesk.removeAll();
+        jdesk.add(objMenu);
     }
 
     public void agregarInternalFrmCrearPartida() {
-        try {
-            objCrearPartida = new InternalFrmCrearPartida(this);
-            objCrearPartida.setMaximum(true);
-            objCrearPartida.setVisible(true);
-            jdesk.removeAll();
-            jdesk.add(objCrearPartida);
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(FrmMainPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        objCrearPartida = new InternalFrmCrearPartida(this);
+        objCrearPartida.setVisible(true);
+        jdesk.removeAll();
+        jdesk.add(objCrearPartida);
     }
 
     public void agregarInternalFrmUnirsePartida(String rango) {
-        try {
-            objUnirsePartida = new InternalFrmUnirsePartida(this, rango);
-            objUnirsePartida.setMaximum(true);
-            objUnirsePartida.setVisible(true);
-            jdesk.removeAll();
-            jdesk.add(objUnirsePartida);
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(FrmMainPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        objUnirsePartida = new InternalFrmUnirsePartida(this, rango);
+        objUnirsePartida.setVisible(true);
+        jdesk.removeAll();
+        jdesk.add(objUnirsePartida);
     }
 
     public void agregarInternalFrmTablero() {
-        try {
-            objTablero = new InternalFrmTablero(this);
-            objTablero.setMaximum(true);
-            objTablero.setVisible(true);
-            jdesk.removeAll();
-            jdesk.add(objTablero);
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(FrmMainPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        objTablero = new InternalFrmTablero(this);
+        objTablero.setVisible(true);
+        jdesk.removeAll();
+        jdesk.add(objTablero);
+
     }
 
     public void crearConfiguracionPartida(int noJugadores, int noCasillasAspa, int noFichas, int noFrijoles) {
