@@ -56,16 +56,16 @@ public class Server implements Runnable {
                     Thread clientHandler = new Thread(new ClientHandler(clientSocket, userInfo));
                     clientHandler.start();
 
-                    if (esperandoJugadores && configuracionPartida[0].equals("" + clientUserInfo.size())) {
+                    if (esperandoJugadores && configuracionPartida[1].equals("" + clientUserInfo.size())) {
                         Thread.sleep(5000);
                         for (Socket clientSockets : clientSockets) {
                             try {
 
                                 PrintWriter clientOut = new PrintWriter(clientSockets.getOutputStream(), true);
-                                clientOut.println("CP," + configuracionPartidaStr);
+                                clientOut.println(configuracionPartidaStr);
 
                                 for (int i = 0; i < clientUserInfo.size(); i++) {
-                                    String jugador = "CJ," + clientUserInfo.get(i);
+                                    String jugador = clientUserInfo.get(i) + "," + configuracionPartida[configuracionPartida.length - 1];
                                     clientOut.println(jugador);
                                 }
                                 esperandoJugadores = false;
@@ -83,7 +83,7 @@ public class Server implements Runnable {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     private static class ClientHandler implements Runnable {
 
         private Socket socket;
@@ -103,14 +103,14 @@ public class Server implements Runnable {
                 out = new PrintWriter(socket.getOutputStream(), true);
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-                if (clientUserInfo.size() > Integer.parseInt(configuracionPartida[0])) {
+                if (clientUserInfo.size() > Integer.parseInt(configuracionPartida[1])) {
                     Thread.sleep(5000);
                     out.println("SALA-LLENA");
                 }
 
                 String message;
                 while ((message = in.readLine()) != null) {
-                    broadcastMessage(userInfo + ": " + message);
+                    broadcastMessage(message);
                 }
 
             } catch (IOException e) {

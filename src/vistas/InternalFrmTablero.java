@@ -1,21 +1,25 @@
 package vistas;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-public class InternalFrmTablero extends javax.swing.JInternalFrame implements Runnable {
+public class InternalFrmTablero extends javax.swing.JInternalFrame {
 
     FrmMainPanel objMainPanel;
+
     JPanel objCasilla;
     JPanel objCasilla2;
-
     int tamCasillaW;
     int tamCasillaH;
 
@@ -26,6 +30,10 @@ public class InternalFrmTablero extends javax.swing.JInternalFrame implements Ru
 
     String[] config;
     List<String[]> jugadores = new ArrayList<>();
+    int turnoPart = 1;
+    
+    Timer timer;
+    int cambios = 0;
 
     public InternalFrmTablero(FrmMainPanel objMainPanel) {
         initComponents();
@@ -55,6 +63,18 @@ public class InternalFrmTablero extends javax.swing.JInternalFrame implements Ru
                     case "SALA-LLENA":
                         salaLlena();
                         break;
+                    case "TC":
+                        turnoPart = Integer.parseInt(ultimalinea[ultimalinea.length-2]);
+                        break;
+                    case "MF":
+                        
+                        break;
+                    case "PA":
+                        
+                        break;
+                    case "FP":
+                        
+                        break;
                     default:
                         System.out.println("defaultSwitch----------------");
                 }
@@ -70,6 +90,7 @@ public class InternalFrmTablero extends javax.swing.JInternalFrame implements Ru
                 // Este método se llama cuando se cambian atributos del documento (por ejemplo, estilos)
             }
         });
+        btnTirarCanas.setEnabled(true);
     }
 
     public void configPartida(String[] ultimaLinea) {
@@ -85,7 +106,7 @@ public class InternalFrmTablero extends javax.swing.JInternalFrame implements Ru
     public void agregaJugador(String[] ultimaLinea) {
         jugadores.add(ultimaLinea);
         String nombre = ultimaLinea[2];
-        int turno = Integer.parseInt(ultimaLinea[ultimaLinea.length - 1]);
+        int turno = Integer.parseInt(ultimaLinea[6]);
         switch (turno) {
             case 1:
                 lbl1.setText(nombre);
@@ -175,9 +196,6 @@ public class InternalFrmTablero extends javax.swing.JInternalFrame implements Ru
                 Logger.getLogger(InternalFrmTablero.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
-        this.repaint();
-
     }
 
     /**
@@ -197,6 +215,9 @@ public class InternalFrmTablero extends javax.swing.JInternalFrame implements Ru
         lbl4 = new javax.swing.JLabel();
         lbl2 = new javax.swing.JLabel();
         lbl1 = new javax.swing.JLabel();
+        btnTirarCanas = new javax.swing.JButton();
+        lblCanas = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         txtFondo = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -242,14 +263,30 @@ public class InternalFrmTablero extends javax.swing.JInternalFrame implements Ru
         lbl1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl1.setText("Esperando Admin...");
 
+        btnTirarCanas.setBackground(new java.awt.Color(252, 252, 252));
+        btnTirarCanas.setText("Tirar Cañas");
+        btnTirarCanas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnTirarCanas.setEnabled(false);
+        btnTirarCanas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTirarCanasActionPerformed(evt);
+            }
+        });
+
+        lblCanas.setFont(new java.awt.Font("Lucida Sans", 1, 18)); // NOI18N
+        lblCanas.setForeground(new java.awt.Color(255, 255, 255));
+        lblCanas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblCanas.setText("0 - 0 - 0 - 0 - 0");
+
+        jButton1.setBackground(new java.awt.Color(252, 252, 252));
+        jButton1.setText("Pasar Turno");
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1.setEnabled(false);
+
         javax.swing.GroupLayout jPanTabLayout = new javax.swing.GroupLayout(jPanTab);
         jPanTab.setLayout(jPanTabLayout);
         jPanTabLayout.setHorizontalGroup(
             jPanTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanTabLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jscroll, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanTabLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -260,6 +297,17 @@ public class InternalFrmTablero extends javax.swing.JInternalFrame implements Ru
                     .addComponent(lbl2, javax.swing.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE)
                     .addComponent(lbl4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(jPanTabLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jscroll, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblCanas, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanTabLayout.createSequentialGroup()
+                        .addComponent(btnTirarCanas, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(40, 40, 40))
         );
         jPanTabLayout.setVerticalGroup(
             jPanTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -272,18 +320,22 @@ public class InternalFrmTablero extends javax.swing.JInternalFrame implements Ru
                 .addGroup(jPanTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbl4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(66, 66, 66)
-                .addComponent(jscroll, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
+                .addGap(12, 12, 12)
+                .addGroup(jPanTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanTabLayout.createSequentialGroup()
+                        .addComponent(lblCanas, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnTirarCanas, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jscroll, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(38, 38, 38))
         );
 
         jpanelJuego.add(jPanTab);
         jPanTab.setBounds(0, 0, 904, 600);
 
         txtFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/src/fondo2.jpg"))); // NOI18N
-        txtFondo.setMaximumSize(new java.awt.Dimension(904, 600));
-        txtFondo.setMinimumSize(new java.awt.Dimension(904, 600));
-        txtFondo.setPreferredSize(new java.awt.Dimension(904, 600));
         jpanelJuego.add(txtFondo);
         txtFondo.setBounds(0, 0, 904, 600);
 
@@ -301,8 +353,37 @@ public class InternalFrmTablero extends javax.swing.JInternalFrame implements Ru
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnTirarCanasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTirarCanasActionPerformed
+        timer = new Timer(50, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tirarCanas();
+            }
+        });
+        timer.start();
+    }//GEN-LAST:event_btnTirarCanasActionPerformed
+
+    public void tirarCanas() {
+        Random random = new Random();
+        int n1 = random.nextInt(2);
+        int n2 = random.nextInt(2);
+        int n3 = random.nextInt(2);
+        int n4 = random.nextInt(2);
+        int n5 = random.nextInt(2);
+        lblCanas.setText("" + n1 + " - " + n2 + " - " + n3 + " - " + n4 + " - " + n5);
+        cambios++;
+        if (cambios >= 30) {
+            timer.stop();
+            cambios = 0;
+            int sum = n1 + n2 + n3 + n4 + n5;
+            sum = (sum == 5) ? 10 : sum;
+            objMainPanel.enviarPaquete("Tr,"+sum);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnTirarCanas;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanTab;
     private javax.swing.JPanel jpanelJuego;
     private javax.swing.JScrollPane jscroll;
@@ -310,12 +391,9 @@ public class InternalFrmTablero extends javax.swing.JInternalFrame implements Ru
     private javax.swing.JLabel lbl2;
     private javax.swing.JLabel lbl3;
     private javax.swing.JLabel lbl4;
+    private javax.swing.JLabel lblCanas;
     public static javax.swing.JTextArea txtArea;
     private javax.swing.JLabel txtFondo;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void run() {
-
-    }
 }

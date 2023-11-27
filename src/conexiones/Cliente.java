@@ -11,13 +11,13 @@ public class Cliente implements Runnable {
 
     private Socket socket;
     private PrintWriter out;
-    private String paquete;
+    private String datosJugador;
     private String ipServer;
     
     InternalFrmTablero objFrmTablero;
 
     public Cliente(String paquete, String ipServer, InternalFrmTablero objFrmTablero) {
-        this.paquete = paquete;
+        this.datosJugador = paquete;
         this.ipServer = ipServer;
         this.objFrmTablero = objFrmTablero;
     }
@@ -34,7 +34,7 @@ public class Cliente implements Runnable {
             out = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-            out.println(paquete);
+            out.println(datosJugador);
 
             Thread messageReceiver = new Thread(() -> {
                 try {

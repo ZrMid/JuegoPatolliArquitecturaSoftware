@@ -86,6 +86,7 @@ public class InternalFrmUnirsePartida extends javax.swing.JInternalFrame {
         jLabel3.setBounds(100, 240, 260, 50);
 
         lblRojo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/src/colorFicha3.png"))); // NOI18N
+        lblRojo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblRojo.setPreferredSize(new java.awt.Dimension(74, 74));
         lblRojo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -96,6 +97,7 @@ public class InternalFrmUnirsePartida extends javax.swing.JInternalFrame {
         lblRojo.setBounds(330, 310, 74, 74);
 
         lblMorado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/src/colorFicha1.png"))); // NOI18N
+        lblMorado.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblMorado.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 lblMoradoMousePressed(evt);
@@ -110,6 +112,7 @@ public class InternalFrmUnirsePartida extends javax.swing.JInternalFrame {
         lblElegido.setBounds(740, 310, 74, 74);
 
         lblAmarillo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/src/colorFicha2.png"))); // NOI18N
+        lblAmarillo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblAmarillo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 lblAmarilloMousePressed(evt);
@@ -125,6 +128,7 @@ public class InternalFrmUnirsePartida extends javax.swing.JInternalFrame {
         jLabel4.setBounds(570, 320, 160, 60);
 
         lblVerde.setIcon(new javax.swing.ImageIcon(getClass().getResource("/src/colorFicha4.png"))); // NOI18N
+        lblVerde.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lblVerde.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 lblVerdeMousePressed(evt);
@@ -143,6 +147,7 @@ public class InternalFrmUnirsePartida extends javax.swing.JInternalFrame {
         jLabel5.setFont(new java.awt.Font("Lucida Sans", 1, 18)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Ingresar");
+        jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         panelBorder1.add(jLabel5, java.awt.BorderLayout.CENTER);
 
         jPanelMain.add(panelBorder1);

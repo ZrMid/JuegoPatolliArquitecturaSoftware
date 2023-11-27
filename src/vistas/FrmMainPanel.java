@@ -5,9 +5,7 @@ import conexiones.Server;
 import datosPartida.ConfiguracionPartida;
 import datosPartida.Ficha;
 import datosPartida.Jugador;
-import java.beans.PropertyVetoException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 public class FrmMainPanel extends javax.swing.JFrame {
@@ -21,7 +19,7 @@ public class FrmMainPanel extends javax.swing.JFrame {
     Cliente objCliente;
     ConfiguracionPartida objConfPartida;
     Jugador objJugador;
-    Ficha[] objFichas;
+    List<Ficha[]> objFichas;
 
     public FrmMainPanel() {
         initComponents();
@@ -65,7 +63,7 @@ public class FrmMainPanel extends javax.swing.JFrame {
 
     public void crearServer(int puerto) {
 
-        String confPart = "" + objConfPartida.getNoJugadores() + "," + objConfPartida.getNoCasillasAspa() + "," + objConfPartida.getNoFichas() + "," + objConfPartida.getNoFrijoles();
+        String confPart = "CP," + objConfPartida.getNoJugadores() + "," + objConfPartida.getNoCasillasAspa() + "," + objConfPartida.getNoFichas() + "," + objConfPartida.getNoFrijoles();
 
         objServer = new Server(puerto, confPart);
 
@@ -78,13 +76,13 @@ public class FrmMainPanel extends javax.swing.JFrame {
         }
     }
 
-    public void crearFichas(int noFichas) {
-        objFichas = new Ficha[noFichas];
-        for (Ficha objFicha : objFichas) {
-            if (objFicha.getNoFicha() == null) {
-                System.out.println("null");
-            }
-        }
+    public void agregarFichas(int noFichas) {
+//        objFichas = new Ficha[noFichas];
+//        for (Ficha objFicha : objFichas) {
+//            if (objFicha.getNoFicha() == null) {
+//                System.out.println("null");
+//            }
+//        }
     }
 
     public void crearJugador(String rango, String nombre, String color) {
@@ -92,8 +90,8 @@ public class FrmMainPanel extends javax.swing.JFrame {
     }
 
     public boolean ingresarServer(String ip) {
-        String paquete = objJugador.getRango() + "," + objJugador.getNombre() + "," + objJugador.getColor();
-        objCliente = new Cliente(paquete, ip, objTablero);
+        String datosJugador = "CJ," + objJugador.getRango() + "," + objJugador.getNombre() + "," + objJugador.getColor() + ",ACTIVO";
+        objCliente = new Cliente(datosJugador, ip, objTablero);
 
         if (objCliente.puedeEstablecerConexion()) {
             Thread cliente = new Thread(objCliente);
@@ -102,7 +100,10 @@ public class FrmMainPanel extends javax.swing.JFrame {
         } else {
             return false;
         }
-
+    }
+    
+    public void enviarPaquete(String paquete){
+        objCliente.enviarPaquete(paquete);
     }
 
     /**

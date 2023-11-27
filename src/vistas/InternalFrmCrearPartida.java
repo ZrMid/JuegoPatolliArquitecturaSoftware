@@ -49,6 +49,8 @@ public class InternalFrmCrearPartida extends javax.swing.JInternalFrame {
         setMaximumSize(new java.awt.Dimension(904, 600));
         setMinimumSize(new java.awt.Dimension(904, 600));
 
+        jPanel1.setMaximumSize(new java.awt.Dimension(904, 600));
+        jPanel1.setMinimumSize(new java.awt.Dimension(904, 600));
         jPanel1.setLayout(null);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/src/regresar.png"))); // NOI18N
@@ -190,7 +192,7 @@ public class InternalFrmCrearPartida extends javax.swing.JInternalFrame {
         btnCrearPartida.add(jLabel1, java.awt.BorderLayout.CENTER);
 
         jPanel1.add(btnCrearPartida);
-        btnCrearPartida.setBounds(320, 440, 230, 60);
+        btnCrearPartida.setBounds(330, 480, 230, 60);
 
         btnMenosFichas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btnMenosFichas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/src/menos.png"))); // NOI18N
@@ -236,11 +238,11 @@ public class InternalFrmCrearPartida extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 902, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -326,11 +328,10 @@ public class InternalFrmCrearPartida extends javax.swing.JInternalFrame {
     public int[] getFrijolesMinMax() {
         int noCasillasTot = Integer.parseInt(lblNoCasillasAspa.getText()) * 4 + 4;
         int noFichas = Integer.parseInt(lblNoFichas.getText()) + 1;
-        int variable = 100 * noFichas;
-        int extra = 400;
-        int min = (noCasillasTot / 3 * variable) + extra;
-        int med = ((int) Math.floor(noCasillasTot / 2.5) * variable) + extra;
-        int max = (noCasillasTot / 2 * variable) + extra;
+        int variable = 100 * (noFichas);
+        int min = (noCasillasTot / 3 * variable);
+        int med = ((int) Math.floor(noCasillasTot / 2.5) * variable);
+        int max = (noCasillasTot / 2 * variable);
         int[] vals = {min, med, max};
         return vals;
     }
