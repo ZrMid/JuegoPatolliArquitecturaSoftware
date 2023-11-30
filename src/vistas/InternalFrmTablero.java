@@ -3,6 +3,8 @@ package vistas;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -23,6 +25,8 @@ public class InternalFrmTablero extends javax.swing.JInternalFrame {
     int tamCasillaW;
     int tamCasillaH;
 
+    JPanel objF;
+
     Color clrEx;
     Color clrCen;
     Color clrTra;
@@ -30,10 +34,13 @@ public class InternalFrmTablero extends javax.swing.JInternalFrame {
 
     String[] config;
     List<String[]> jugadores = new ArrayList<>();
+    List<JPanel> fichas = new ArrayList<>();
     int turnoPart = 1;
-    
+
     Timer timer;
     int cambios = 0;
+
+    int canas = 0;
 
     public InternalFrmTablero(FrmMainPanel objMainPanel) {
         initComponents();
@@ -56,6 +63,7 @@ public class InternalFrmTablero extends javax.swing.JInternalFrame {
                     case "CP":
                         configPartida(ultimalinea);
                         pintarTablero();
+                        pintarFichas();
                         break;
                     case "CJ":
                         agregaJugador(ultimalinea);
@@ -64,16 +72,24 @@ public class InternalFrmTablero extends javax.swing.JInternalFrame {
                         salaLlena();
                         break;
                     case "TC":
-                        turnoPart = Integer.parseInt(ultimalinea[ultimalinea.length-2]);
+                        String cad = "";
+                        for (int i = 0; i < 5; i++) {
+                            if (i < Integer.parseInt(ultimalinea[1])) {
+                                cad += "" + 1 + " - ";
+                            } else {
+                                cad += "" + 0 + " - ";
+                            }
+                        }
+                        lblCanas.setText(cad.substring(0, cad.length() - 3));
                         break;
                     case "MF":
-                        
+
                         break;
                     case "PA":
-                        
+
                         break;
                     case "FP":
-                        
+
                         break;
                     default:
                         System.out.println("defaultSwitch----------------");
@@ -106,7 +122,7 @@ public class InternalFrmTablero extends javax.swing.JInternalFrame {
     public void agregaJugador(String[] ultimaLinea) {
         jugadores.add(ultimaLinea);
         String nombre = ultimaLinea[2];
-        int turno = Integer.parseInt(ultimaLinea[6]);
+        int turno = Integer.parseInt(ultimaLinea[4]);
         switch (turno) {
             case 1:
                 lbl1.setText(nombre);
@@ -196,6 +212,89 @@ public class InternalFrmTablero extends javax.swing.JInternalFrame {
                 Logger.getLogger(InternalFrmTablero.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    public void pintarFichas() {
+        // * Integer.parseInt(config[3])
+        int fTot = Integer.parseInt(config[1]);
+        objMainPanel.agregarFichas(fTot);
+
+        for (int i = 0; i < objMainPanel.objFichas.size(); i++) {
+            String noF = objMainPanel.objFichas.get(i).getNoFicha();
+            int Fx = 904 / 2 - tamCasillaW + 1;
+            int Fy = 600 / 2 - tamCasillaH + 1;
+
+            objF = new JPanel();
+            objF.setBounds(Fx, Fy, tamCasillaW - 5, tamCasillaH - 5);
+            objF.setName(noF);
+            objF.setBackground(Color.GREEN);
+            objF.setVisible(true);
+
+            jPanTab.add(objF);
+            jPanTab.setComponentZOrder(objF, 0);
+            fichas.add(objF);
+
+            objF.addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    moverFicha(objF.getX(), objF.getY());
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    // Método llamado cuando se presiona un botón del mouse
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    // Método llamado cuando se suelta un botón del mouse
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    //System.out.println("Mouse entró en la etiqueta");
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    //System.out.println("Mouse salió de la etiqueta");
+                }
+            });
+        }
+    }
+
+    public void moverFicha(int x, int y) {
+        int casillasAspa = Integer.parseInt(config[2]);
+
+        int limy = (600 / 2) - ((tamCasillaH + 2) * (casillasAspa + 1)) -2 ;
+        int limyP = (600 / 2) + ((tamCasillaH + 2) * (casillasAspa + 1));
+        int limx = (902 / 2) - ((tamCasillaW + 2) * (casillasAspa + 1));
+
+        if (y > limy && y < 600 / 2 && x < 902 / 2) {
+            y -= (tamCasillaH + 2) * canas;
+            double residuo = (limy - y) / (tamCasillaH + 2);
+            System.out.println((limy - y) / (tamCasillaH + 2.0000));
+            if (residuo > 0.5 && residuo < 1.5) {
+                y = limy + 2;
+                x += tamCasillaW + 1;
+            } else if (residuo > 1) {
+                y = limy + 2;
+                x += tamCasillaW + 1;
+                y += (tamCasillaH + 2) * residuo;
+            }
+
+        } else if (y < limyP) {
+            y += (tamCasillaH + 2) * canas;
+        }
+        fichas.get(turnoPart - 1).setLocation(x, y);
+
+        turnoPart++;
+        if (turnoPart > Integer.parseInt(config[1])) {
+            turnoPart = 1;
+        }
+
+        canas = 0;
+        lblCanas.setText("0 - 0 - 0 - 0 - 0");
     }
 
     /**
@@ -375,9 +474,9 @@ public class InternalFrmTablero extends javax.swing.JInternalFrame {
         if (cambios >= 30) {
             timer.stop();
             cambios = 0;
-            int sum = n1 + n2 + n3 + n4 + n5;
-            sum = (sum == 5) ? 10 : sum;
-            objMainPanel.enviarPaquete("Tr,"+sum);
+            canas = n1 + n2 + n3 + n4 + n5;
+            canas = (canas == 5) ? 10 : canas;
+            objMainPanel.enviarPaquete("TC," + canas);
         }
     }
 

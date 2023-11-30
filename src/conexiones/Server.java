@@ -43,7 +43,7 @@ public class Server implements Runnable {
                 String userInfo = in.readLine();
 
                 if (userInfo != null) {
-                    if (userInfo.split(",")[0].equals("ADMIN")) {
+                    if (userInfo.split(",")[1].equals("ADMIN")) {
                         userInfo += ",1";
                     } else {
                         userInfo += "," + turno;
@@ -65,7 +65,7 @@ public class Server implements Runnable {
                                 clientOut.println(configuracionPartidaStr);
 
                                 for (int i = 0; i < clientUserInfo.size(); i++) {
-                                    String jugador = clientUserInfo.get(i) + "," + configuracionPartida[configuracionPartida.length - 1];
+                                    String jugador = clientUserInfo.get(i) + "," + configuracionPartida[configuracionPartida.length - 1] + ",ACTIVO";
                                     clientOut.println(jugador);
                                 }
                                 esperandoJugadores = false;

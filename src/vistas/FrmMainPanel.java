@@ -5,6 +5,7 @@ import conexiones.Server;
 import datosPartida.ConfiguracionPartida;
 import datosPartida.Ficha;
 import datosPartida.Jugador;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -19,7 +20,7 @@ public class FrmMainPanel extends javax.swing.JFrame {
     Cliente objCliente;
     ConfiguracionPartida objConfPartida;
     Jugador objJugador;
-    List<Ficha[]> objFichas;
+    List<Ficha> objFichas = new ArrayList<>();
 
     public FrmMainPanel() {
         initComponents();
@@ -76,13 +77,10 @@ public class FrmMainPanel extends javax.swing.JFrame {
         }
     }
 
-    public void agregarFichas(int noFichas) {
-//        objFichas = new Ficha[noFichas];
-//        for (Ficha objFicha : objFichas) {
-//            if (objFicha.getNoFicha() == null) {
-//                System.out.println("null");
-//            }
-//        }
+    public void agregarFichas(int numF) {
+        for (int i = 0; i < numF; i++) {
+            objFichas.add(new Ficha(""+i, 100, 100));
+        }
     }
 
     public void crearJugador(String rango, String nombre, String color) {
@@ -90,7 +88,7 @@ public class FrmMainPanel extends javax.swing.JFrame {
     }
 
     public boolean ingresarServer(String ip) {
-        String datosJugador = "CJ," + objJugador.getRango() + "," + objJugador.getNombre() + "," + objJugador.getColor() + ",ACTIVO";
+        String datosJugador = "CJ," + objJugador.getRango() + "," + objJugador.getNombre() + "," + objJugador.getColor();
         objCliente = new Cliente(datosJugador, ip, objTablero);
 
         if (objCliente.puedeEstablecerConexion()) {

@@ -3,13 +3,13 @@ package datosPartida;
 public class Ficha {
 
     private String noFicha;
-    private String cordX;
-    private String cordY;
+    private int cordX;
+    private int cordY;
 
-    public Ficha(String noFicha) {
+    public Ficha(String noFicha, int x, int y) {
         this.noFicha = noFicha;
-        this.cordX = "";
-        this.cordY = "";
+        this.cordX = x;
+        this.cordY = y;
     }
 
     public String getNoFicha() {
@@ -20,19 +20,19 @@ public class Ficha {
         this.noFicha = noFicha;
     }
 
-    public String getCordX() {
+    public int getCordX() {
         return cordX;
     }
 
-    public void setCordX(String cordX) {
+    public void setCordX(int cordX) {
         this.cordX = cordX;
     }
 
-    public String getCordY() {
+    public int getCordY() {
         return cordY;
     }
 
-    public void setCordY(String cordY) {
+    public void setCordY(int cordY) {
         this.cordY = cordY;
     }
     
